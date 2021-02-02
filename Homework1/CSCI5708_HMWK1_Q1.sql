@@ -34,18 +34,18 @@ constraint pk_Professor primary key (Email)
 
 create table if not exists Registers (
 Email CHAR(20),
-id CHAR(20),
 Course_id CHAR(20),
+Semester_id CHAR(20),
 constraint pk_Registers primary key (Email, id, Course_id),
-constraint fk_Student foreign key (Email) references Student,
-constraint fk_Course foreign key (id) references Course,
-constraint fk_Taken foreign key (Course_id) references Taken
+constraint fk_Student foreign key (Email) references Student(Email),
+constraint fk_Course foreign key (Course_id) references Course(id),
+constraint fk_Taken foreign key (Semester_id) references Semester(id)
 );
 
 create table if not exists Teaches (
 Email CHAR(20),
 id CHAR(20),
 constraint pk_Registers primary key (id),
-constraint fk_Professor foreign key (Email) references Professor(Email) on delete cascade, --key constraint cascade if professor removed?
-constraint fk_Course foreign key (id) references Course
+constraint fk_Professor foreign key (Email) references Professor(Email),
+constraint fk_Course foreign key (id) references Course(id)
 );
