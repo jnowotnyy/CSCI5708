@@ -5,47 +5,47 @@ set search_path to 'registration';
 
 --Entities
 create table if not exists Student (
-Email CHAR(20),
+StudentEmail CHAR(20),
 Name CHAR(50),
 GPA REAL,
-constraint pk_Student primary key (Email)
+constraint pk_Student primary key (StudentEmail)
 );
 
 create table if not exists Semester (
-id CHAR(20),
+SemId CHAR(20),
 Name CHAR(20),
-constraint pk_Taken primary key (id)
+constraint pk_Taken primary key (SemId)
 );
 
 create table if not exists Course (
-id CHAR(20),
+CourseId CHAR(20),
 Name CHAR(50),
 Credits INTEGER,
-constraint pk_Course primary key (id)
+constraint pk_Course primary key (CourseId)
 );
 
 create table if not exists Professor (
-Email CHAR(20),
+ProfEmail CHAR(20),
 Name CHAR(50),
-constraint pk_Professor primary key (Email)
+constraint pk_Professor primary key (ProfEmail)
 );
 
 --Relations
 
 create table if not exists Registers (
-Email CHAR(20),
-Course_id CHAR(20),
-Semester_id CHAR(20),
-constraint pk_Registers primary key (Email, id, Course_id),
-constraint fk_Student foreign key (Email) references Student(Email),
-constraint fk_Course foreign key (Course_id) references Course(id),
-constraint fk_Taken foreign key (Semester_id) references Semester(id)
+StudentEmail CHAR(20),
+CourseId CHAR(20),
+SemId CHAR(20),
+constraint pk_Registers primary key (StudentEmail, SemId, CourseId),
+constraint fk_Student foreign key (StudentEmail) references Student(StudentEmail),
+constraint fk_Course foreign key (CourseId) references Course(CourseId),
+constraint fk_Taken foreign key (SemId) references Semester(SemId)
 );
 
 create table if not exists Teaches (
-Email CHAR(20),
-id CHAR(20),
-constraint pk_Registers primary key (id),
-constraint fk_Professor foreign key (Email) references Professor(Email),
-constraint fk_Course foreign key (id) references Course(id)
+ProfEmail CHAR(20),
+Courseid CHAR(20),
+constraint pk_Teaches primary key (Courseid),
+constraint fk_Professor foreign key (ProfEmail) references Professor(ProfEmail),
+constraint fk_Course foreign key (CourseId) references Course(CourseId)
 );
