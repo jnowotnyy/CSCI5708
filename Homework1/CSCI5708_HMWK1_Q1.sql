@@ -39,7 +39,7 @@ SemId CHAR(20),
 constraint pk_Registers primary key (StudentEmail, SemId, CourseId),
 constraint fk_Student foreign key (StudentEmail) references Student(StudentEmail),
 constraint fk_Course foreign key (CourseId) references Course(CourseId),
-constraint fk_Taken foreign key (SemId) references Semester(SemId)
+constraint fk_Semester foreign key (SemId) references Semester(SemId)
 );
 
 create table if not exists Teaches (
