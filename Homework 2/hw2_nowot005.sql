@@ -16,9 +16,8 @@ WHERE S.sid = R.sid
 --2. Find the student id(s) who have taken all courses within the Computer Science department.
 
 SELECT R.sid
-FROM Registers R, Course C
-WHERE R.cid = C.cid
-	AND C.cid = ALL(
+FROM Registers R
+WHERE R.cid = (
 		SELECT C.cid,
 		FROM Courses C,
 		WHERE C.department = "Computer Science");
@@ -27,8 +26,8 @@ WHERE R.cid = C.cid
 --3. Find the name of the student who has the highest gpa.
 
 SELECT S.name
-FROM Student
-HAVING MAX(S.gpa); --TODO: verify i can use ALL clause
+FROM Student S
+HAVING MAX(S.gpa);
 
 --4. Find the student id(s) who have taken the same course in exactly two different semesters.
 --For example, Alice takes CSci 5708 in Fall 2020 and Spring 2021 while Bob takes CSci
@@ -40,6 +39,11 @@ HAVING COUNT(R.semester)=2
 GROUP BY R.cid;
 
 
---5. Find the combination of student id(s) who have taken the same exact courses. Each combination of student i is d(s) must only appear once. For example, Bob and Alice take CSci 5708 and 4707 while Tom takes CSci 5708 only. Only either Bob and Alice or Alice and Bob, but not both, must be returned
+--5. Find the combination of student id(s) who have taken the same exact courses.
+-- Each combination of student i is d(s) must only appear once. For example, Bob 
+--and Alice take CSci 5708 and 4707 while Tom takes CSci 5708 only. Only either Bob and Alice or Alice and Bob, but not both, must be returned
 
-
+SELECT DISTINCT R1.sid, R2.sid
+FROM Registers R1, Registers R2
+WHERE R1.sid <> R2.sid
+	AND R1.cid = (SELECT R1.cid FROM R1) UNION (SELECT R2.cid FROM R2)
