@@ -43,14 +43,14 @@ create table if not exists ProjectDB.EmpProject (
 EmpId NUMERIC,
 ProjId NUMERIC,
 constraint pk_EmpProject PRIMARY KEY (EmpId, ProjId),
-constraint fk_Employee FOREIGN KEY (EmpId) REFERENCES ProjectDB.Employee(EmpId),
-constraint fk_Project FOREIGN KEY (ProjId) REFERENCES ProjectDB.Project(ProjId)
+constraint fk_Employee FOREIGN KEY (EmpId) REFERENCES ProjectDB.Employee(EmpId) ON DELETE CASCADE,
+constraint fk_Project FOREIGN KEY (ProjId) REFERENCES ProjectDB.Project(ProjId) ON DELETE CASCADE
 );
 
 create table if not exists ProjectDB.ProjectManager (
 ProjId NUMERIC,
 MgrId NUMERIC,
 constraint pk_ProjectManager PRIMARY KEY (ProjId, MgrId),
-constraint fk_Project FOREIGN KEY (ProjId) REFERENCES ProjectDB.Project(ProjId),
-constraint fk_Manager FOREIGN KEY (MgrId) REFERENCES ProjectDB.Employee(EmpId)
+constraint fk_Project FOREIGN KEY (ProjId) REFERENCES ProjectDB.Project(ProjId) ON DELETE CASCADE,
+constraint fk_Manager FOREIGN KEY (MgrId) REFERENCES ProjectDB.Employee(EmpId) ON DELETE CASCADE
 );

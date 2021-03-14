@@ -24,13 +24,15 @@ GROUP BY P.ProjName;
 --#4
 --Find the name(s) of the university/universities that graduated the maximum number of
 --distinct managers.
---SELECT U.UnivName
---FROM ProjectDB.University U
---WHERE U.UnivID 
-    --IN (SELECT G.UnivId
-        --FROM ProjectDB.Graduate G
-        --WHERE G.EmpId 
-            --IN (SELECT PM.EmpId, MAX(SELECT COUNT(M))))
+SELECT U.UnivName
+FROM ProjectDB.University U
+WHERE U.UnivId = (
+	SELECT G.UnivId
+	FROM ProjectDB.Graduate G
+	WHERE G.EmpId = (
+		SELECT MAX(DISTINCT PM.MgrId)
+		FROM ProjectDB.ProjectManager PM));
+
 
 --#5
 --For each employee, say E, display the name of E, the department name of E, and the
@@ -44,7 +46,14 @@ WHERE E.DeptId = D.DeptId
 --Display the name of the project that has the maximum number of different employees
 --who worked/”are working” on it. If more than one project qualify, display all the qualified
 --projects. (Hint: refer to EmpProject only and not ProjectManager).
---SELECT P.ProjName
---FROM ProjectDB.Project P
---WHERE ProjId = (SELECT MAX(EP.EmpId)
---                FROM ProjectDB.EmpProject EP);
+SELECT DISTINCT P.ProjName
+FROM ProjectDB.Project P
+WHERE P.ProjId IN (
+	SELECT EP.ProjId
+	FROM ProjectDB.EmpProject EP
+	WHERE EP.ProjId NOT IN (
+		SELECT MAX(x.count) 
+		FROM ( 
+			SELECT count(EmpId)as count 
+			FROM ProjectDB.EmpProject 
+			group by ProjId)x));
